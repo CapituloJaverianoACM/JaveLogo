@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout02"
+            android:layout_width="186dp"
+            android:layout_height="121dp"
+            android:layout_margin="5dp"
+            android:gravity="center" >
+
+            <org.jfedor.nxtremotecontrol.SquareImageButton
+                android:id="@+id/button_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:src="@drawable/left_arrow" />
+
+            <LinearLayout
+                android:id="@+id/LinearLayout04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <org.jfedor.nxtremotecontrol.SquareImageButton
+                    android:id="@+id/button_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/up_arrow" />
+
+                <org.jfedor.nxtremotecontrol.SquareImageButton
+                    android:id="@+id/button_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/down_arrow" />
+            </LinearLayout>
+
+            <org.jfedor.nxtremotecontrol.SquareImageButton
+                android:id="@+id/button_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:src="@drawable/right_arrow" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:orientation="vertical" >
+
+            <org.jfedor.nxtremotecontrol.SquareImageButton
+                android:id="@+id/button_pencil"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/pencil" />
+
+            <org.jfedor.nxtremotecontrol.SquareImageButton
+                android:id="@+id/button_no_pencil"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/no_pencil" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/button_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Run" />
+
+        <Button
+            android:id="@+id/button_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/commands_list"
+        android:layout_width="match_parent"
+        android:layout_height="229dp" >
+    </ListView>
+
+<LinearLayout android:id="@+id/LinearLayout03"
+		android:layout_height="wrap_content" android:orientation="horizontal"
+		android:layout_width="fill_parent">
+		<TextView android:layout_width="fill_parent" android:id="@+id/state_display"
+			android:textSize="28sp" android:layout_weight="1" android:text="Not connected"
+			android:gravity="center" android:layout_height="fill_parent"
+			android:textStyle="bold"></TextView>
+
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_gravity="center"
+			android:id="@+id/connect_button" android:text="Connect"
+			android:paddingLeft="20dp" android:paddingRight="20dp"></Button>
+		<Button android:text="Disconnect" android:id="@+id/disconnect_button"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_gravity="center" android:paddingLeft="20dp"
+			android:paddingRight="20dp" android:visibility="gone"></Button>
+
+	</LinearLayout>
+</LinearLayout>
