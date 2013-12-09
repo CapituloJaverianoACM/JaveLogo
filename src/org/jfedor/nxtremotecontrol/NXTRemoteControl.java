@@ -30,6 +30,10 @@ package org.jfedor.nxtremotecontrol;
  * tilt controls
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jfedor.nxtremotecontrol.model.CustomListViewAdapter;
 import org.jfedor.nxtremotecontrol.model.NXTInstruction;
 import org.jfedor.nxtremotecontrol.view.Tank3MotorView;
 import org.jfedor.nxtremotecontrol.view.TankView;
@@ -57,6 +61,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -112,7 +118,7 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
     private boolean mSynchronizeMotors;
     
     private ArrayAdapter<NXTInstruction> commandsList;
-    private ListView commandsListView; 
+    private ListView listView; 
 
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -147,7 +153,7 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
        
             if (mBluetoothAdapter == null) {
-                Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Bluetooth no está disponible", Toast.LENGTH_LONG).show();
                 finish();
                 return;
             }
@@ -158,16 +164,22 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
         mNXTTalker = new NXTTalker(mHandler);
     }
     private class ClearList implements OnClickListener {
-    	private ArrayAdapter<NXTInstruction> list;
-    	public ClearList(ArrayAdapter<NXTInstruction> list) {
-    		this.list = list;
+    	private List<NXTInstruction> commandList;
+    	public ClearList(List<NXTInstruction> list) {
+    		this.commandList = list;
     	}
 		@Override
 		public void onClick(View v) {
-			list.clear();
+			commandList.clear();
+       	    listView = (ListView) findViewById(R.id.commands_list);
+       	    CustomListViewAdapter adapter = funcaux(commandList);
+       	    listView.setAdapter(adapter);
+			
 		}
     	
     }
+   
+    
     private class ProgramButtonOnTouchListener implements OnTouchListener {
     	private ArrayAdapter<NXTInstruction> commandsList;
     	private NXTInstruction command;
@@ -188,6 +200,38 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             return true;
 		}
     }
+    
+    private class CustomProgramButtonOnTouchListener implements OnTouchListener {
+    	private ArrayList<NXTInstruction> commandsList;
+    	private NXTInstruction command;
+    	
+    	public CustomProgramButtonOnTouchListener(ArrayList<NXTInstruction> commandsList, NXTInstruction command) {
+    		this.commandsList = commandsList;
+    		this.command = command;
+    	}
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			//Log.i("NXT", "onTouch event: " + Integer.toString(event.getAction()));
+            int action = event.getAction();
+            //if ((action == MotionEvent.ACTION_DOWN) || (action == MotionEvent.ACTION_MOVE)) {
+            if (action == MotionEvent.ACTION_DOWN) {
+            	this.commandsList.add(this.command);
+            	 listView = (ListView) findViewById(R.id.commands_list);
+            	 CustomListViewAdapter adapter = funcaux(commandsList);
+            	 listView.setAdapter(adapter);
+            }
+            return true;
+		}
+    }
+    
+    public CustomListViewAdapter funcaux(List<NXTInstruction> commandsList)
+    {
+    	 CustomListViewAdapter adapter = new CustomListViewAdapter(this,
+                 R.layout.list_item, commandsList,1);
+    	 return adapter;
+    }
+    
     private class DirectionButtonOnTouchListener implements OnTouchListener {
         
         private double lmod;
@@ -390,33 +434,50 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             setContentView(R.layout.program);
             
             updateMenu(R.id.menuitem_program);
+          //listView.getItemAtPosition(position)
+            final List<NXTInstruction>rowItems = new ArrayList<NXTInstruction>();
+           
+            listView = (ListView) findViewById(R.id.commands_list);
+            listView.setOnItemClickListener(new OnItemClickListener() {
+
+            	   public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+   
+            		   Log.i("NXTtt", "selected item : " + "la posicion es "+ position+"y el size es "+rowItems.size());
+            		   
+
+            	     rowItems.remove(position);
+            	     listView = (ListView) findViewById(R.id.commands_list);
+                	 CustomListViewAdapter adapter2 = funcaux(rowItems);
+                	 listView.setAdapter(adapter2);
+            	     
+            	 //Log.i("NXTtt", "selected item : " +" "+listView.getItemAtPosition(2)+" "+position);
+            	}}
+            );
             
-            commandsList = new ArrayAdapter<NXTInstruction>(NXTRemoteControl.this,R.layout.device_name);
-            commandsListView = (ListView) findViewById(R.id.commands_list);
-            commandsListView.setAdapter(commandsList);
             
+               
             ImageButton buttonUp = (ImageButton) findViewById(R.id.button_up);
             
-            buttonUp.setOnTouchListener(new ProgramButtonOnTouchListener(commandsList, new NXTInstruction(R.drawable.up_arrow, 1, "adelante")));
+            buttonUp.setOnTouchListener(new CustomProgramButtonOnTouchListener((ArrayList<NXTInstruction>) rowItems, new NXTInstruction(R.drawable.up_arrow, 1, "adelante")));
             
             ImageButton buttonLeft = (ImageButton) findViewById(R.id.button_left);
-            buttonLeft.setOnTouchListener(new ProgramButtonOnTouchListener(commandsList, new NXTInstruction(R.drawable.left_arrow, 2, "izquierda")));
+            buttonLeft.setOnTouchListener(new CustomProgramButtonOnTouchListener((ArrayList<NXTInstruction>) rowItems, new NXTInstruction(R.drawable.left_arrow, 2, "izquierda")));
             
             ImageButton buttonDown = (ImageButton) findViewById(R.id.button_down);
-            buttonDown.setOnTouchListener(new ProgramButtonOnTouchListener(commandsList, new NXTInstruction(R.drawable.down_arrow, 3, "atras")));
+            buttonDown.setOnTouchListener(new CustomProgramButtonOnTouchListener((ArrayList<NXTInstruction>) rowItems, new NXTInstruction(R.drawable.down_arrow, 3, "atras")));
             
             ImageButton buttonRight = (ImageButton) findViewById(R.id.button_right);
-            buttonRight.setOnTouchListener(new ProgramButtonOnTouchListener(commandsList, new NXTInstruction(R.drawable.right_arrow, 4, "derecha")));
+            buttonRight.setOnTouchListener(new CustomProgramButtonOnTouchListener((ArrayList<NXTInstruction>) rowItems, new NXTInstruction(R.drawable.right_arrow, 4, "derecha")));
             
             ImageButton buttonPencil = (ImageButton) findViewById(R.id.button_pencil);
-            buttonPencil.setOnTouchListener(new ProgramButtonOnTouchListener(commandsList, new NXTInstruction(R.drawable.pencil, 5, "activar")));
+            buttonPencil.setOnTouchListener(new CustomProgramButtonOnTouchListener((ArrayList<NXTInstruction>) rowItems, new NXTInstruction(R.drawable.pencil, 5, "activar")));
             
             ImageButton buttonNoPencil = (ImageButton) findViewById(R.id.button_no_pencil);
-            buttonNoPencil.setOnTouchListener(new ProgramButtonOnTouchListener(commandsList, new NXTInstruction(R.drawable.no_pencil, 6, "desactivar")));
+            buttonNoPencil.setOnTouchListener(new CustomProgramButtonOnTouchListener((ArrayList<NXTInstruction>) rowItems, new NXTInstruction(R.drawable.no_pencil, 6, "desactivar")));
             
             Button clearButton = (Button) findViewById(R.id.button_clear);
             
-            clearButton.setOnClickListener(new ClearList(commandsList));
+            clearButton.setOnClickListener(new ClearList(rowItems));
             
             
             Button runButton = (Button) findViewById(R.id.button_run);
@@ -428,8 +489,8 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
 					int time = 0;
 					int time1 = 1549;
 					int time2 = 700;
-					for(int i = 0;i<commandsList.getCount();++i) {
-						switch(commandsList.getItem(i).duracion)
+					for(int i = 0;i<rowItems.size();++i) {
+						switch(rowItems.get(i).duracion)
 						{
 								case 1:
 								new Handler().postDelayed(new Runnable() { 
@@ -698,7 +759,7 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
         int color = 0;
         switch (mState){ 
         case NXTTalker.STATE_NONE:
-            stateText = "Not connected";
+            stateText = "No Conectado";
             color = 0xffff0000;
             mConnectButton.setVisibility(View.VISIBLE);
             mDisconnectButton.setVisibility(View.GONE);
@@ -708,7 +769,7 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             }
             break;
         case NXTTalker.STATE_CONNECTING:
-            stateText = "Connecting...";
+            stateText = "Conectando...";
             color = 0xffffff00;
             mConnectButton.setVisibility(View.GONE);
             mDisconnectButton.setVisibility(View.GONE);
@@ -718,7 +779,7 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             }
             break;
         case NXTTalker.STATE_CONNECTED:
-            stateText = "Connected";
+            stateText = "Conectado";
             color = 0xff00ff00;
             mConnectButton.setVisibility(View.GONE);
             mDisconnectButton.setVisibility(View.VISIBLE);

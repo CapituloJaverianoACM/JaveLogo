@@ -7,6 +7,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +25,9 @@ public class CustomListViewAdapter extends ArrayAdapter<NXTInstruction> {
         idComando = _idComando;
     }
  
+    
+   
+    
     /*private view holder class*/
     private class ViewHolder {
         ImageView imageView;
