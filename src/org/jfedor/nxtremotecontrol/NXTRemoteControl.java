@@ -153,7 +153,7 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
        
             if (mBluetoothAdapter == null) {
-                Toast.makeText(this, "Bluetooth no está disponible", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
                 finish();
                 return;
             }
@@ -759,7 +759,7 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
         int color = 0;
         switch (mState){ 
         case NXTTalker.STATE_NONE:
-            stateText = "No Conectado";
+            stateText = "Not connected";
             color = 0xffff0000;
             mConnectButton.setVisibility(View.VISIBLE);
             mDisconnectButton.setVisibility(View.GONE);
@@ -769,7 +769,7 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             }
             break;
         case NXTTalker.STATE_CONNECTING:
-            stateText = "Conectando...";
+            stateText = "Connecting...";
             color = 0xffffff00;
             mConnectButton.setVisibility(View.GONE);
             mDisconnectButton.setVisibility(View.GONE);
@@ -779,7 +779,7 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             }
             break;
         case NXTTalker.STATE_CONNECTED:
-            stateText = "Conectado";
+            stateText = "Connected";
             color = 0xff00ff00;
             mConnectButton.setVisibility(View.GONE);
             mDisconnectButton.setVisibility(View.VISIBLE);
