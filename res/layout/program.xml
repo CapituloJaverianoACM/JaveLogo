@@ -11,17 +11,25 @@
         <LinearLayout
             android:id="@+id/LinearLayout02"
             android:layout_width="186dp"
-            android:layout_height="121dp"
+            android:layout_height="178dp"
             android:layout_margin="5dp"
+            android:layout_weight="0.02"
             android:gravity="center" >
 
-            <org.jfedor.nxtremotecontrol.SquareImageButton
-                android:id="@+id/button_left"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:src="@drawable/left_arrow" />
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/button_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/left_arrow" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/LinearLayout04"
@@ -30,27 +38,34 @@
                 android:layout_weight="1"
                 android:orientation="vertical" >
 
-                <org.jfedor.nxtremotecontrol.SquareImageButton
+                <ImageView
                     android:id="@+id/button_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
                     android:src="@drawable/up_arrow" />
 
-                <org.jfedor.nxtremotecontrol.SquareImageButton
+                <ImageView
                     android:id="@+id/button_down"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
                     android:src="@drawable/down_arrow" />
             </LinearLayout>
 
-            <org.jfedor.nxtremotecontrol.SquareImageButton
-                android:id="@+id/button_right"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:src="@drawable/right_arrow" />
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/button_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/right_arrow" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -58,13 +73,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <org.jfedor.nxtremotecontrol.SquareImageButton
+            <ImageView
                 android:id="@+id/button_pencil"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:src="@drawable/pencil" />
 
-            <org.jfedor.nxtremotecontrol.SquareImageButton
+            <ImageView
                 android:id="@+id/button_no_pencil"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
@@ -76,18 +91,19 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <Button
+            <ImageView
                 android:id="@+id/button_loop"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ciclo" />
+                android:layout_width="113dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.38"
+                android:src="@drawable/loop_start_btn" />
 
-            <Button
+            <ImageView
                 android:id="@+id/button_end_loop"
                 android:layout_width="113dp"
-                android:layout_height="wrap_content"
-                android:text="Fin Ciclo" />
-
+                android:layout_height="40dp"
+                android:layout_weight="0.44"
+                android:src="@drawable/loop_end_btn" />
         </LinearLayout>
 
         <LinearLayout

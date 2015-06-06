@@ -20,10 +20,12 @@ public final class R {
         public static final int ic_menu_touchpad=0x7f020006;
         public static final int icon=0x7f020007;
         public static final int left_arrow=0x7f020008;
-        public static final int no_pencil=0x7f020009;
-        public static final int pencil=0x7f02000a;
-        public static final int right_arrow=0x7f02000b;
-        public static final int up_arrow=0x7f02000c;
+        public static final int loop_end_btn=0x7f020009;
+        public static final int loop_start_btn=0x7f02000a;
+        public static final int no_pencil=0x7f02000b;
+        public static final int pencil=0x7f02000c;
+        public static final int right_arrow=0x7f02000d;
+        public static final int up_arrow=0x7f02000e;
     }
     public static final class id {
         public static final int FrameLayout01=0x7f070018;

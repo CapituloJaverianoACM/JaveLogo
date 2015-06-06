@@ -35,11 +35,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Stack;
+
 import org.jfedor.nxtremotecontrol.model.CustomListViewAdapter;
 import org.jfedor.nxtremotecontrol.model.NXTInstruction;
 import org.jfedor.nxtremotecontrol.view.Tank3MotorView;
 import org.jfedor.nxtremotecontrol.view.TankView;
 import org.jfedor.nxtremotecontrol.view.TouchPadView;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -73,6 +75,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -552,59 +555,59 @@ public class NXTRemoteControl extends Activity implements
 				}
 			});
 
-			ImageButton buttonUp = (ImageButton) findViewById(R.id.button_up);
+			ImageView buttonUp = (ImageView) findViewById(R.id.button_up);
 
 			buttonUp.setOnTouchListener(new CustomProgramButtonOnTouchListener(
 					(ArrayList<NXTInstruction>) rowItems, new NXTInstruction(
 							R.drawable.up_arrow, 1, "adelante"), this));
 
-			ImageButton buttonLeft = (ImageButton) findViewById(R.id.button_left);
+			ImageView buttonLeft = (ImageView) findViewById(R.id.button_left);
 			buttonLeft
 					.setOnTouchListener(new CustomProgramButtonOnTouchListener(
 							(ArrayList<NXTInstruction>) rowItems,
 							new NXTInstruction(R.drawable.left_arrow, 2,
 									"izquierda"), this));
 
-			ImageButton buttonDown = (ImageButton) findViewById(R.id.button_down);
+			ImageView buttonDown = (ImageView) findViewById(R.id.button_down);
 			buttonDown
 					.setOnTouchListener(new CustomProgramButtonOnTouchListener(
 							(ArrayList<NXTInstruction>) rowItems,
 							new NXTInstruction(R.drawable.down_arrow, 3,
 									"atras"), this));
 
-			ImageButton buttonRight = (ImageButton) findViewById(R.id.button_right);
+			ImageView buttonRight = (ImageView) findViewById(R.id.button_right);
 			buttonRight
 					.setOnTouchListener(new CustomProgramButtonOnTouchListener(
 							(ArrayList<NXTInstruction>) rowItems,
 							new NXTInstruction(R.drawable.right_arrow, 4,
 									"derecha"), this));
 
-			ImageButton buttonPencil = (ImageButton) findViewById(R.id.button_pencil);
+			ImageView buttonPencil = (ImageView) findViewById(R.id.button_pencil);
 			buttonPencil
 					.setOnTouchListener(new CustomProgramButtonOnTouchListener(
 							(ArrayList<NXTInstruction>) rowItems,
 							new NXTInstruction(R.drawable.pencil, 6, "activar"), this));
 
-			ImageButton buttonNoPencil = (ImageButton) findViewById(R.id.button_no_pencil);
+			ImageView buttonNoPencil = (ImageView) findViewById(R.id.button_no_pencil);
 			buttonNoPencil
 					.setOnTouchListener(new CustomProgramButtonOnTouchListener(
 							(ArrayList<NXTInstruction>) rowItems,
 							new NXTInstruction(R.drawable.no_pencil, 5,
 									"desactivar"), this));
 
-			Button buttontLoop = (Button) findViewById(R.id.button_loop);
+			ImageView buttontLoop = (ImageView) findViewById(R.id.button_loop);
 			buttontLoop
 					.setOnTouchListener(new CustomProgramButtonOnTouchListener(
 							(ArrayList<NXTInstruction>) rowItems,
-							new NXTInstruction(R.drawable.pencil, 7, "ciclo", 2), this));
+							new NXTInstruction(R.drawable.loop_start_btn, 7, "ciclo", 2), this));
 
-			Button buttontEndLoop = (Button) findViewById(R.id.button_end_loop);
+			ImageView buttontEndLoop = (ImageView) findViewById(R.id.button_end_loop);
 			buttontEndLoop
 					.setOnTouchListener(new CustomProgramButtonOnTouchListener(
 							(ArrayList<NXTInstruction>) rowItems,
-							new NXTInstruction(R.drawable.no_pencil, 8,
+							new NXTInstruction(R.drawable.loop_end_btn, 8,
 									"finCiclo"), this));
-
+			
 			Button clearButton = (Button) findViewById(R.id.button_clear);
 
 			clearButton.setOnClickListener(new ClearList(rowItems));
