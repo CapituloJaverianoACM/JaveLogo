@@ -30,8 +30,11 @@ package org.jfedor.nxtremotecontrol;
  * tilt controls
  */
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Stack;
 
 import org.jfedor.nxtremotecontrol.model.CustomListViewAdapter;
 import org.jfedor.nxtremotecontrol.model.NXTInstruction;
@@ -65,6 +68,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -117,16 +121,19 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
     private boolean mRegulateSpeed;
     private boolean mSynchronizeMotors;
     
+    private static int brackets = 0;
+    
     private ArrayAdapter<NXTInstruction> commandsList;
     private ListView listView; 
-
+    private static EditText repeticiones;
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Log.i("NXT", "NXTRemoteControl.onCreate()");
-        
+        this.brackets = 1;
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
+        repeticiones=(EditText) findViewById(R.id.editText1);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         readPreferences(prefs, null);
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -208,6 +215,17 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
     	public CustomProgramButtonOnTouchListener(ArrayList<NXTInstruction> commandsList, NXTInstruction command) {
     		this.commandsList = commandsList;
     		this.command = command;
+    		Log.i("NUm, Descp", command.duracion+" "+command.nombre);
+    		if(command.duracion==7){
+    			NXTRemoteControl.brackets++;
+    			Log.i("Repeticiones+",NXTRemoteControl.brackets +"");
+    			//this.command.repeticiones=Integer.parseInt(((EditText) findViewById(R.id.editText1)).getText()+"");
+    		}else if(command.duracion==8){
+    			
+    			NXTRemoteControl.brackets--;
+    			Log.i(">Repeticiones-",NXTRemoteControl.brackets +"");
+    			}
+    		
     	}
 
 		@Override
@@ -475,6 +493,12 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             ImageButton buttonNoPencil = (ImageButton) findViewById(R.id.button_no_pencil);
             buttonNoPencil.setOnTouchListener(new CustomProgramButtonOnTouchListener((ArrayList<NXTInstruction>) rowItems, new NXTInstruction(R.drawable.no_pencil, 6, "desactivar")));
             
+            Button buttontLoop = (Button) findViewById(R.id.button_loop);
+            buttontLoop.setOnTouchListener(new CustomProgramButtonOnTouchListener((ArrayList<NXTInstruction>) rowItems, new NXTInstruction(R.drawable.pencil, 7, "ciclo",2)));
+            
+            Button buttontEndLoop = (Button) findViewById(R.id.button_end_loop);
+            buttontEndLoop.setOnTouchListener(new CustomProgramButtonOnTouchListener((ArrayList<NXTInstruction>) rowItems, new NXTInstruction(R.drawable.no_pencil, 8, "finCiclo")));
+            
             Button clearButton = (Button) findViewById(R.id.button_clear);
             
             clearButton.setOnClickListener(new ClearList(rowItems));
@@ -486,105 +510,131 @@ public class NXTRemoteControl extends Activity implements OnSharedPreferenceChan
             runButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					int time = 0;
-					int time1 = 1549;
-					int time2 = 700;
-					for(int i = 0;i<rowItems.size();++i) {
-						switch(rowItems.get(i).duracion)
-						{
-								case 1:
-								new Handler().postDelayed(new Runnable() { 
-							         public void run() { 
-							        	 mNXTTalker.moveFront(mPower, mReverse, mReverseLR);
-							         } 
-							    }, time);
-								time+=time1;
-							break;
-							case 2:
-								
-								if(pencilDown) {
+					Log.i("RUN REPETICIONES+",NXTRemoteControl.brackets +"");
+					if(NXTRemoteControl.brackets==0){
+						int time = 0;
+						int time1 = 1549;
+						int time2 = 700;
+						Stack<Integer> stackLoopsIndex = new Stack<Integer>();
+						Stack<Integer> stackLoopCurrent = new Stack<Integer>();
+						for(int i = 0;i<rowItems.size();++i) {
+							
+							switch(rowItems.get(i).duracion)
+							{
+									case 1:
 									new Handler().postDelayed(new Runnable() { 
 								         public void run() { 
-								        	 mNXTTalker.pencilUp();
+								        	 mNXTTalker.moveFront(mPower, mReverse, mReverseLR);
+								         } 
+								    }, time);
+									time+=time1;
+								break;
+								case 2:
+									
+									if(pencilDown) {
+										new Handler().postDelayed(new Runnable() { 
+									         public void run() { 
+									        	 mNXTTalker.pencilUp();
+									         } 
+										}, time);
+									}
+									time+=time2;
+									
+									new Handler().postDelayed(new Runnable() { 
+								         public void run() { 
+								        	 mNXTTalker.moveLeft(mPower, mReverse, mReverseLR);
 								         } 
 									}, time);
-								}
-								time+=time2;
-								
-								new Handler().postDelayed(new Runnable() { 
-							         public void run() { 
-							        	 mNXTTalker.moveLeft(mPower, mReverse, mReverseLR);
-							         } 
-								}, time);
-								time+=time1;
-								
-								if(pencilDown) {
+									time+=time1;
+									
+									if(pencilDown) {
+										new Handler().postDelayed(new Runnable() { 
+									         public void run() { 
+									        	 mNXTTalker.pencilDown();
+									         } 
+										}, time);
+										time+=time2;
+									}
+									
+								break;
+								case 3:
+									new Handler().postDelayed(new Runnable() { 
+								         public void run() { 
+								        	 mNXTTalker.moveBack(mPower, mReverse, mReverseLR);
+								         } 
+									}, time);
+									time+=time1;
+								break;
+								case 4:
+									if(pencilDown) {
+										new Handler().postDelayed(new Runnable() { 
+									         public void run() { 
+									        	 mNXTTalker.pencilUp();
+									         } 
+										}, time);
+									}
+									time+=time2;
+									new Handler().postDelayed(new Runnable() { 
+								         public void run() { 
+								        	 mNXTTalker.moveRight(mPower, mReverse, mReverseLR);
+								         } 
+									}, time);
+									time+=time1;
+									if(pencilDown) {
+										new Handler().postDelayed(new Runnable() { 
+									         public void run() { 
+									        	 mNXTTalker.pencilDown();
+									         } 
+										}, time);
+										time+=time2;
+									}
+								break;
+								case 5://bajar
+									pencilDown = true;
 									new Handler().postDelayed(new Runnable() { 
 								         public void run() { 
 								        	 mNXTTalker.pencilDown();
 								         } 
 									}, time);
 									time+=time2;
-								}
-								
-							break;
-							case 3:
-								new Handler().postDelayed(new Runnable() { 
-							         public void run() { 
-							        	 mNXTTalker.moveBack(mPower, mReverse, mReverseLR);
-							         } 
-								}, time);
-								time+=time1;
-							break;
-							case 4:
-								if(pencilDown) {
+								break;
+								case 6: //levantar
+									pencilDown = false;
 									new Handler().postDelayed(new Runnable() { 
 								         public void run() { 
 								        	 mNXTTalker.pencilUp();
 								         } 
 									}, time);
-								}
-								time+=time2;
-								new Handler().postDelayed(new Runnable() { 
-							         public void run() { 
-							        	 mNXTTalker.moveRight(mPower, mReverse, mReverseLR);
-							         } 
-								}, time);
-								time+=time1;
-								if(pencilDown) {
-									new Handler().postDelayed(new Runnable() { 
-								         public void run() { 
-								        	 mNXTTalker.pencilDown();
-								         } 
-									}, time);
 									time+=time2;
-								}
-							break;
-							case 5://bajar
-								pencilDown = true;
-								new Handler().postDelayed(new Runnable() { 
-							         public void run() { 
-							        	 mNXTTalker.pencilDown();
-							         } 
-								}, time);
-								time+=time2;
-							break;
-							case 6: //levantar
-								pencilDown = false;
-								new Handler().postDelayed(new Runnable() { 
-							         public void run() { 
-							        	 mNXTTalker.pencilUp();
-							         } 
-								}, time);
-								time+=time2;
-							break;
+								break;
+								case 7: //ciclo
+								
+									Log.i("Numero de repeticiones", (rowItems.get(i).repeticiones)+"");
+									stackLoopCurrent.add(2);
+									stackLoopsIndex.add(i);
+									Log.i("entre", " al ciclo ");
+								break;
+								case 8: //fin ciclo
+									if(stackLoopCurrent.empty()){
+										
+									}else if(stackLoopCurrent.peek() == 1){
+											stackLoopCurrent.pop();
+											stackLoopsIndex.pop();
+										}else{
+											stackLoopCurrent.add(stackLoopCurrent.pop()-1);
+											i = stackLoopsIndex.peek();
+										}
+								break;
+							
 						}
+							
 					}
 					new Handler().postDelayed(new Runnable() { 
 				         public void run() { 
 				        	 mNXTTalker.stopMovement();
 				         } 
 				    },time);
+					}
 				}
 			});
             
