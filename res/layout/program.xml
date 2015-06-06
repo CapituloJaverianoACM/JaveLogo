@@ -95,16 +95,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/editText1"
-                android:layout_width="91dp"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="0" >
-
-                <requestFocus />
-            </EditText>
-
         </LinearLayout>
 
         <ImageView

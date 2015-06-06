@@ -5,6 +5,14 @@ public class NXTInstruction {
 	public int duracion;
 	public String nombre;
 	public int repeticiones;
+	
+	public NXTInstruction(NXTInstruction other) {
+		this.idImagen = other.idImagen;
+		this.duracion = other.duracion;
+		this.nombre = other.nombre;
+		this.repeticiones = other.repeticiones;
+	}
+
 	public NXTInstruction(int idImagen, int duracion, String nombre) {
 		super();
 		this.idImagen = idImagen;
