@@ -368,11 +368,11 @@ public class NXTTalker {
     }
 
 	public void pencilDown() {
-		this.motors3((byte)0,(byte) 0, (byte)30, false, false);
+		this.motors3((byte)0,(byte) 0, (byte)25, false, false);
 		
 	}
 	public void pencilUp() {
-		this.motors3((byte)0,(byte) 0, (byte)-50, false, false);
+		this.motors3((byte)0,(byte) 0, (byte)-25, false, false);
 		
 	}
 }
